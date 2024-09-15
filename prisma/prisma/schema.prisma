@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Campus {
+  id      Int      @id @default(autoincrement()) /// 校舎ID
+  name    String   @db.VarChar(16) /// 校舎名
+  address String   @db.VarChar(32) /// 住所
+
+  @@map("campuses")
+}
+
+model Student {
+  id         Int      @id @default(autoincrement()) /// 受講生ID
+  name       String   @db.VarChar(64) /// 受講生名
+  type       String   @db.VarChar(16) /// 受講生属性(単科|本科|卒業生)
+  campus_id   Int      /// 校舎ID
+  section    String?  @db.VarChar(32) /// セクション名
+
+  @@map("students")
+}
+
+model Subject {
+  id            Int      @id @default(autoincrement()) /// 科目ID
+  name          String   @db.VarChar(32) /// 科目名
+  subject_type   String   @db.VarChar(16) /// 必修タイプ(ヒト|モノ|カネ)
+  subject_group  String   @db.VarChar(16) /// 科目種別(基礎|応用|発展)
+  unit          Int      /// 単位数
+  is_compulsory  Boolean  /// 必修フラグ
+
+  @@map("subjects")
+}
+
+model StudentSubject {
+  id        Int      @id @default(autoincrement()) /// 学生-受講科目ID
+  student_id Int      /// 受講生ID
+  subject_id Int      /// 科目ID
+  status    String   @default("todo") @db.VarChar(16) /// 受講状況
+
+  @@map("student_subject")
+}

@@ -25,3 +25,17 @@
 ```zsh
 % psql -p 5432 -U user sql_dojo
 ```
+
+## Prisma
+
+### マイグレーション作成
+
+```sh
+pnpm prisma migrate dev --create-only
+```
+
+### マイグレーション実行
+
+```sh
+pnpm prisma migrate deploy
+```
